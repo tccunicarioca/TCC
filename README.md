@@ -13,15 +13,15 @@ Descrição do trabalho:
 - C#
 
 Etapas concluídas:
--
+-Desenvolvimento de introdução aos conceitos utilizados:
+-   Cloud computing - Thiago
+-   Azure - Júlio
+-   Desenvolvimento mobile - João
 
 Etapa Atual:
 
-Desenvolvimento de introdução aos conceitos utilizados:
-- Cloud computing - Thiago
-- Azure - Júlio
-- Desenvolvimento mobile - João
+- Desenvolvimento de cenário real para elaboração de casos de uso 
 
 Próxima Etapa:
 
-- Desenvolvimento de cenário real para elaboração de casos de uso 
+- Desenvolvimento de diagramas
