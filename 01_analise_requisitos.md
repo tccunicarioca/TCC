@@ -1,21 +1,25 @@
-Integração do Android com a nuvem, utilizando recursos do Microsoft AZZURE
+Integração do Android com a nuvem, utilizando recursos do Microsoft AZURE
 
 <CENÁRIOS>
 
-Cenário 1
+##Cenário 2 - Cadastro de prestador de serviço
+
+	O usuário deseja ingressar no aplicativo como  prestador de serviço, não tendo um cadastro como cliente. Ele dispõe de duas das competências que podem ser buscados pelo aplicativo. O Usuário deve efetuar um cadastro como novo colaborador pessoa física ou juridica, utilizando nome real e cpf/cnpj válidos, imagem de perfil (colaborador ou logo da empresa), endereço residencial ou comercial (que poderá ser mostrado ou não a clientes, conforme modo de trabalho do colaborador), valor base de orçamento, 
+
+##Cenário 3
 
   Um usuário comum busca um determinado serviço em sua proximidade. Ele não dispõe de listas de serviços para consulta no momento. Não tem conhecimento sobre profissionais de confiança na localidade onde esta. Também não tem em sua agenda, contatos de pessoas de confiança, para realizar uma consulta a respeito de um profissional, seja porque esta sem acesso a essas pessoas no momento, ou porque nenhuma utilizou o serviço de que ele necessita recentemente. 
 
 
-Resumo do cenário 1 
+###Resumo do cenário 3
 
   O cliente precisa realizar um trabalho específico; Um profissional de confiança (com possíveis recomendações); Proximidade de sua localização atual; Possibilidade de avaliar para outros usuários; Possibilidade de consultar a área onde o serviço é disponibilizado caso queira se locomover até lá (exemplo: oficinas).
 
-Cenário 2
+##Cenário 4
 
  	Um profissional deseja ampliar seu público alvo. Possui um serviço de qualidade, mas não tem muitos meios de se promover no momento. Ele tem possibilidade de se deslocar dentro de um espaço de média amplitude, porém seus possíveis clientes podem estar em qualquer lugar dentro desse espaço. Podem haver clientes próximos com a necessidade de seus serviços e ele precisa saber onde. 
 	
-Resumo do cenário 2 
+###Resumo do cenário 4
 
   O profissional precisa encontrar um público alvo para seus serviços; Precisa saber sua localização, caso precise se locomover até lá; Precisa de feedbacks positivos para novas contratações.
 
