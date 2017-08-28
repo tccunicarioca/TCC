@@ -4,7 +4,17 @@ Integração do Android com a nuvem, utilizando recursos do Microsoft AZURE
 
 ##Cenário 2 - Cadastro de prestador de serviço
 
-	O usuário deseja ingressar no aplicativo como  prestador de serviço, não tendo um cadastro como cliente. Ele dispõe de duas das competências que podem ser buscados pelo aplicativo. O Usuário deve efetuar um cadastro como novo colaborador pessoa física ou juridica, utilizando nome real e cpf/cnpj válidos, imagem de perfil (colaborador ou logo da empresa), endereço residencial ou comercial (que poderá ser mostrado ou não a clientes, conforme modo de trabalho do colaborador), valor base de orçamento, 
+	O usuário deseja ingressar no aplicativo como  prestador de serviço, não tendo um cadastro como cliente. Ele dispõe de duas das competências que podem ser buscados pelo aplicativo. O Usuário deve efetuar um cadastro como novo colaborador pessoa física ou juridica, utilizando:
+	- nome real 
+	- cpf/cnpj válidos 
+	- imagem de perfil (colaborador ou logo da empresa) 
+	- endereço residencial ou comercial (que poderá ser mostrado ou não a clientes, conforme modo de trabalho do colaborador)
+	- valor base de orçamento
+	- Horário de atendimento
+	- Áreas de atuação
+	...
+	
+#_ RN01 - Todo colaborador necessita de um cadastro contendo dados válidos.
 
 ##Cenário 3
 
