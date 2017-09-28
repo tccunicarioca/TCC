@@ -84,3 +84,26 @@ INSERT INTO tblservicoprestador VALUES (2,1, 120.00);
 INSERT INTO tblservicoprestador VALUES (2,2, 50.00);
 INSERT INTO tblinteresse(idUsuario,idPrestadorServico, idServico) VALUES (1,2,2);
 INSERT INTO tblinteresse(idUsuario,idPrestadorServico, idServico) VALUES (2,1,1);
+
+
+
+#Daqui pra baixo é uma única consulta. Se assusta não (vou ver se dá pra atualizar e deixar menor)
+
+SELECT ClienteServico AS 'Cliente', PrestadorServico as 'Profissional', nomeServico AS 'Serviço Buscado'
+FROM (
+	  SELECT s.nomeServico, i.idPrestadorServico, i.idUsuario 
+	  FROM tblinteresse i JOIN tblservico s ON s.idServico = i.idServico
+      ) AS Servico 
+      
+	  JOIN (
+		SELECT u.nomeUsuario AS PrestadorServico, i.idPrestadorServico AS idPrestadorServico 
+		FROM tblusuario u JOIN tblinteresse i ON u.idUsuario = i.idPrestadorServico
+	  ) AS Prestador 
+	
+		ON Servico.idPrestadorServico = Prestador.idPrestadorServico 
+        
+JOIN (
+
+	SELECT u.nomeUsuario AS ClienteServico, i.idUsuario FROM tblusuario u JOIN tblinteresse i ON u.idUsuario = i.idUsuario
+    ) AS Cliente 
+ON Cliente.idUsuario = Servico.idUsuario;
