@@ -1,109 +1,106 @@
-CREATE SCHEMA IF NOT EXISTS `sonarservicos` DEFAULT CHARACTER SET utf8 ;
-USE `sonarservicos` ;
+USE [sonarServicos]
+GO
 
-CREATE TABLE IF NOT EXISTS `tblusuario` (
-  `idUsuario` INT NOT NULL AUTO_INCREMENT,
-  `nomeUsuario` VARCHAR(80) NOT NULL,
-  `documentoUsuario` VARCHAR(11) NOT NULL,
-  `enderecoUsuario` VARCHAR(120) NOT NULL,
-  `celularUsuario` VARCHAR(14) NULL,
-  `telefoneUsuario` VARCHAR(14) NULL,
-  `comercialUsuario` VARCHAR(14) NOT NULL,
-  `emailUsuario` VARCHAR(60) NOT NULL,
-  PRIMARY KEY (`idUsuario`),
-  UNIQUE INDEX `CPF_UNIQUE` (`documentoUsuario` ASC));
+CREATE TABLE USUARIO(
+	ID_USUARIO INT NOT NULL IDENTITY PRIMARY KEY,
+	NM_USUARIO VARCHAR(80),
+	NR_CNPJ_CPF VARCHAR(14),
+	NM_ENDERECO VARCHAR(255),
+	NR_TEL_CEL VARCHAR(15),
+	NR_TEL_COM VARCHAR(15),
+	NR_TEL_RES VARCHAR(15),
+	NM_EMAIL_USU VARCHAR(100)
+)
 
+CREATE INDEX ID_DOC
+ON USUARIO (NR_CNPJ_CPF)
 
-CREATE TABLE IF NOT EXISTS `tblprestadorservico` (
-  `idPrestadorServico` INT NOT NULL AUTO_INCREMENT,
-  `idUsuario` INT NOT NULL,
-  PRIMARY KEY (`idPrestadorServico`, `idUsuario`),
-  INDEX `idxusuarioprestador` (`idUsuario` ASC),
-  CONSTRAINT `fkusuarioprestador`
-    FOREIGN KEY (`idUsuario`)
-    REFERENCES `tblusuario` (`idUsuario`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+CREATE TABLE USUARIO_PRESTADOR (
+    ID_USU_PRESTADOR INT NOT NULL IDENTITY PRIMARY KEY,
+    ID_USUARIO INT NOT NULL,
+    CONSTRAINT FK_ID_USUARIO FOREIGN KEY (ID_USUARIO)
+    REFERENCES USUARIO(ID_USUARIO)
+);
 
+CREATE INDEX IDX_PRESTADOR
+ON USUARIO_PRESTADOR (ID_USU_PRESTADOR)
 
-CREATE TABLE IF NOT EXISTS `tblservico` (
-  `idServico` INT NOT NULL AUTO_INCREMENT,
-  `nomeServico` VARCHAR(60) NOT NULL,
-  PRIMARY KEY (`idServico`));
+CREATE TABLE SERVICO(
+	ID_SERVICO INT NOT NULL IDENTITY PRIMARY KEY,
+	NM_SERVICO VARCHAR(100) NOT NULL UNIQUE
+)
 
-
-CREATE TABLE IF NOT EXISTS `tblservicoprestador` (
-  `idPrestadorServico` INT NOT NULL,
-  `idServico` INT NOT NULL,
-  `valorOrcamento` DECIMAL(7,2) NULL,
-  PRIMARY KEY (`idPrestadorServico`, `idServico`),
-  INDEX `idxservicprestado` (`idServico` ASC),
-  INDEX `idxservicprestador` (`idPrestadorServico` ASC),
-  CONSTRAINT `fkservicprestador`
-    FOREIGN KEY (`idPrestadorServico`)
-    REFERENCES `tblprestadorservico` (`idPrestadorServico`)
+CREATE TABLE SERVICO_PRESTADOR (
+  ID_USU_PRESTADOR INT NOT NULL,
+  ID_SERVICO INT NOT NULL,
+  VL_ORCAMENTO DECIMAL(7,2) NULL,
+  PRIMARY KEY (ID_USU_PRESTADOR, ID_SERVICO),
+  INDEX IDX_SERVICO_PREST (ID_SERVICO ASC),
+  INDEX IDX_SERV_PRESTADOR (ID_USU_PRESTADOR ASC),
+  CONSTRAINT FK_SERVICO_PRESTADOR
+    FOREIGN KEY (ID_USU_PRESTADOR)
+    REFERENCES USUARIO_PRESTADOR (ID_USU_PRESTADOR)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fkservicprestado`
-    FOREIGN KEY (`idServico`)
-    REFERENCES `tblservico` (`idServico`)
+  CONSTRAINT FK_SERVICO_PRESTADO
+    FOREIGN KEY (ID_SERVICO)
+    REFERENCES SERVICO (ID_SERVICO)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
-
-CREATE TABLE IF NOT EXISTS `tblinteresse` (
-  `idUsuario` INT NOT NULL,
-  `idPrestadorServico` INT NOT NULL,
-  `idServico` INT NOT NULL,
-  PRIMARY KEY (`idUsuario`, `idPrestadorServico`, `idServico`),
-  INDEX `idxprestadorinteressante` (`idPrestadorServico` ASC, `idServico` ASC),
-  INDEX `idxusuariointeressado` (`idUsuario` ASC),
-  CONSTRAINT `fkusuariointeressado`
-    FOREIGN KEY (`idUsuario`)
-    REFERENCES `tblusuario` (`idUsuario`)
+CREATE TABLE INTERESSE(
+  ID_USUARIO INT NOT NULL,
+  ID_USU_PRESTADOR INT NOT NULL,
+  ID_SERVICO INT NOT NULL,
+  PRIMARY KEY (ID_USUARIO, ID_USU_PRESTADOR, ID_SERVICO),
+  INDEX IDX_PRESTADOR_INTERESSE (ID_USU_PRESTADOR ASC, ID_SERVICO ASC),
+  INDEX IDX_USUARIO_INTERESSADO (ID_USUARIO ASC),
+  CONSTRAINT FK_USUARIO_INTERESSADO
+    FOREIGN KEY (ID_USUARIO)
+    REFERENCES USUARIO (ID_USUARIO)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fkprestadorinteressante`
-    FOREIGN KEY (`idPrestadorServico` , `idServico`)
-    REFERENCES `tblservicoprestador` (`idPrestadorServico` , `idServico`)
+  CONSTRAINT FK_PRESTADOR_INTERESSANTE
+    FOREIGN KEY (ID_USU_PRESTADOR , ID_SERVICO)
+    REFERENCES SERVICO_PRESTADOR (ID_USU_PRESTADOR , ID_SERVICO)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
-    
-
-#Inserção de um caso de testes
-    
-INSERT INTO tblusuario(nomeUsuario, documentoUsuario, enderecoUsuario, celularUsuario, telefoneUsuario,comercialUsuario, emailUsuario) VALUES ("Teste1 de teste testando", "99999999999", "Rua da casa do teste1, 45 - bairro nobre - itaocara",  "5521999999999", "552123456788","552199999999", "teste1@gmail.com");
-INSERT INTO tblusuario(nomeUsuario, documentoUsuario, enderecoUsuario, celularUsuario, telefoneUsuario,comercialUsuario, emailUsuario) VALUES ("Teste2 da silva teste", "99999999990", "Rua da casa do teste1, 45 - bairro nobre - itaocara",  "5521999999998", "552123456789","552199999998", "teste2@gmail.com");
-INSERT INTO tblprestadorservico(idUsuario) VALUES (1);
-INSERT INTO tblprestadorservico(idUsuario) VALUES (2);
-INSERT INTO tblservico(nomeServico)VALUES ("Desenvolvimento de sistemas");
-INSERT INTO tblservico(nomeServico)VALUES ("Manutenção de computadores");
-INSERT INTO tblservicoprestador VALUES (1,1, 80.00);
-INSERT INTO tblservicoprestador VALUES (1,2, 100.00);
-INSERT INTO tblservicoprestador VALUES (2,1, 120.00);
-INSERT INTO tblservicoprestador VALUES (2,2, 50.00);
-INSERT INTO tblinteresse(idUsuario,idPrestadorServico, idServico) VALUES (1,2,2);
-INSERT INTO tblinteresse(idUsuario,idPrestadorServico, idServico) VALUES (2,1,1);
 
 
+-- CASO DE TESTES
 
-#Daqui pra baixo é uma única consulta. Se assusta não (vou ver se dá pra atualizar e deixar menor)
+ INSERT INTO USUARIO(NM_USUARIO, NR_CNPJ_CPF, NM_ENDERECO, NR_TEL_CEL, NR_TEL_COM,NR_TEL_RES, NM_EMAIL_USU) VALUES ('Teste1 de teste testando', '99999999999', 'Rua da casa do teste1, 45 - bairro nobre - itaocara',  '5521999999999', '552123456788','552199999999', 'teste1@gmail.com');
+ INSERT INTO USUARIO(NM_USUARIO, NR_CNPJ_CPF, NM_ENDERECO, NR_TEL_CEL, NR_TEL_COM,NR_TEL_RES, NM_EMAIL_USU) VALUES ('Teste2 da silva teste', '99999999990', 'Rua da casa do teste1, 45 - bairro nobre - itaocara',  '5521999999998', '552123456789','552199999998', 'teste2@gmail.com');
+  INSERT INTO  USUARIO_PRESTADOR(ID_USUARIO) VALUES (1);
+ INSERT INTO USUARIO_PRESTADOR(ID_USUARIO) VALUES (2);
+ INSERT INTO SERVICO(NM_SERVICO) VALUES ('Desenvolvimento de sistemas');
+ INSERT INTO SERVICO(NM_SERVICO) VALUES ('Manuten��o de computadores');
+ INSERT INTO SERVICO_PRESTADOR   VALUES (1,1, 80.00);
 
-SELECT ClienteServico AS 'Cliente', PrestadorServico as 'Profissional', nomeServico AS 'Serviço Buscado'
+
+ INSERT INTO SERVICO_PRESTADOR   VALUES (1,2, 100.00);
+ INSERT INTO SERVICO_PRESTADOR   VALUES (2,1, 120.00);
+ INSERT INTO SERVICO_PRESTADOR   VALUES (2,2, 50.00);
+ INSERT INTO INTERESSE(ID_USUARIO,ID_USU_PRESTADOR, ID_SERVICO)  VALUES (1,2,2);
+ INSERT INTO INTERESSE(ID_USUARIO,ID_USU_PRESTADOR, ID_SERVICO)  VALUES (2,1,1);
+
+ 
+ 
+SELECT ClienteServico AS 'Cliente', PrestadorServico as 'Profissional', NM_SERVICO AS 'Servi�o Buscado'
 FROM (
-	  SELECT s.nomeServico, i.idPrestadorServico, i.idUsuario 
-	  FROM tblinteresse i JOIN tblservico s ON s.idServico = i.idServico
+	  SELECT s.NM_SERVICO, i.ID_USU_PRESTADOR, i.ID_USUARIO 
+	  FROM INTERESSE i JOIN SERVICO s ON s.ID_SERVICO = i.ID_SERVICO
       ) AS Servico 
       
 	  JOIN (
-		SELECT u.nomeUsuario AS PrestadorServico, i.idPrestadorServico AS idPrestadorServico 
-		FROM tblusuario u JOIN tblinteresse i ON u.idUsuario = i.idPrestadorServico
+		SELECT u.NM_USUARIO AS PrestadorServico, i.ID_USU_PRESTADOR AS ID_USU_PRESTADOR 
+		FROM USUARIO u JOIN INTERESSE i ON u.ID_USUARIO = i.ID_USU_PRESTADOR
 	  ) AS Prestador 
 	
-		ON Servico.idPrestadorServico = Prestador.idPrestadorServico 
+		ON Servico.ID_USU_PRESTADOR = Prestador.ID_USU_PRESTADOR 
         
 JOIN (
 
-	SELECT u.nomeUsuario AS ClienteServico, i.idUsuario FROM tblusuario u JOIN tblinteresse i ON u.idUsuario = i.idUsuario
+	SELECT u.NM_USUARIO AS ClienteServico, i.ID_USUARIO FROM USUARIO u JOIN INTERESSE i ON u.ID_USUARIO = i.ID_USUARIO
     ) AS Cliente 
-ON Cliente.idUsuario = Servico.idUsuario;
+ON Cliente.ID_USUARIO = Servico.ID_USUARIO;
